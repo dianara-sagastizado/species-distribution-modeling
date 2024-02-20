@@ -16,7 +16,7 @@ if(any(installed_packages==FALSE)){
 #Packages loading, with library function
 invisible(lapply(packages, library, character.only=TRUE))
 
-
+#Restart R
 usethis::edit_r_environ()
 
 spiderBackbone<-name_backbone(name="Habronattus americanus")
@@ -58,10 +58,31 @@ fData<-d %>%
 fData<-fData %>% 
   filter(countryCode %in% c("US", "CA", "MX"))
 
+#alternate code for above:
+#fData<- fData %>%
+# filter(countryCode=="US" | countryCode=="MX" | countryCode=="CA)
+
 fData<-fData%>%
   filter(!basisOfRecord %in% c("FOSSIL_SPECIMEN", "LIVING_SPECIMEN"))
 
 fData<-fData%>%
   cc_sea(lon="decimalLongitude", lat="decimalLatitude")
+
+#remove duplicates
+fData<-fData%>%
+  distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all=TRUE)
+
+#steps above in one swoop
+# cleanData<-d %>%
+#   filter(countryCode %in% c("US", "CA", "MX"))%>%
+#   filter(!basisOfRecord %in% c("FOSSIL_SPECIMEN", "LIVING_SPECIMEN"))%>%
+#   cc_sea(lon="decimalLongitude", lat="decimalLatitude") %>%
+#   distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all=TRUE)
+
+
+
+
+
+
 
 
