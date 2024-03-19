@@ -5,7 +5,7 @@
 # create a map to display species occurrence points 
 
 #list of packages
-packages<-c("tidyverse", "rgbif", "usethis", "CoordinateCleaner", "leaflet", "mapview")
+packages<-c("tidyverse", "rgbif", "usethis", "CoordinateCleaner", "leaflet", "mapview", "webshot2")
 
 # install packages not yet installed
 installed_packages<-packages %in% rownames(installed.packages())
@@ -16,7 +16,7 @@ if(any(installed_packages==FALSE)){
 #Packages loading, with library function
 invisible(lapply(packages, library, character.only=TRUE))
 
-#Restart R
+#Restart R, edit information and then add it to file. Rely on pulled data
 usethis::edit_r_environ()
 
 spiderBackbone<-name_backbone(name="Habronattus americanus")
@@ -45,6 +45,7 @@ occ_download(pred("taxonKey", speciesKey), format="SIMPLE_CSV")
 #Citation:
 #  GBIF Occurrence Download https://doi.org/10.15468/dl.gg8t3w Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2024-02-13
 
+#use download key from code output above
 d <- occ_download_get('0012222-240202131308920', path="data/") %>%
   occ_download_import()
 
@@ -71,6 +72,8 @@ fData<-fData%>%
 #remove duplicates
 fData<-fData%>%
   distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all=TRUE)
+
+write.csv(fData, "data/cleanedData.csv")
 
 #steps above in one swoop
 # cleanData<-d %>%
