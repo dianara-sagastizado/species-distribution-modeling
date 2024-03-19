@@ -215,13 +215,13 @@ habronattusFutureSDM <- raster::predict(habronattusCurrentSDM, geographicAreaFut
 
 habronattusFutureSDMDf <- as.data.frame(habronattusFutureSDM, xy=TRUE)
 
-
+#establish bounding box
 xmax <- max(habronattusFutureSDMDf$x)
 xmin <- min(habronattusFutureSDMDf$x)
 ymax <- max(habronattusFutureSDMDf$y)
 ymin <- min(habronattusFutureSDMDf$y)
 
-
+#create map
 ggplot() +
   geom_polygon(data = wrld, mapping = aes(x = long, y = lat, group = group),
                fill = "grey75") +
@@ -237,6 +237,7 @@ ggplot() +
        fill = "Env Suitability") +
   theme(legend.box.background=element_rect(),legend.box.margin=margin(5,5,5,5)) 
 
+#save map
 ggsave("output/habronattusFutureSdm.jpg",  width = 8, height = 6)
 
 
